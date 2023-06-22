@@ -113,7 +113,7 @@ def get_records():
 @app.route('/test')
 def test_db_connection():
     try:
-        db.session.execute('SELECT 1')  # Perform a simple query to test the connection
+        db.session.execute(text('SELECT 1'))  # Declare the SQL expression as text
         return 'Database connection successful!'
     except Exception as e:
         return f'Database connection error: {str(e)}'
