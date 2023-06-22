@@ -23,6 +23,7 @@ parents_schema = ParentsSchema()
 all_parents_schema = ParentsSchema(many=True)
 
 class Kids(db.Model):
+    __tablename__ = 'Kids'
     KidID = db.Column(db.Integer, primary_key=True)
     ParentID = db.Column(db.Integer, db.ForeignKey('parents.ParentID'), nullable=False)
     FirstName = db.Column(db.String(80), nullable=False)
