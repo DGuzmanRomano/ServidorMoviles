@@ -11,6 +11,7 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class Parents(db.Model):
+     __tablename__ = 'Parents'
     ParentID = db.Column(db.Integer, primary_key=True)
     FirstName = db.Column(db.String(80), nullable=False)
     LastName = db.Column(db.String(80), nullable=False)
@@ -38,6 +39,7 @@ kids_schema = KidsSchema()
 all_kids_schema = KidsSchema(many=True)
 
 class Records(db.Model):
+     __tablename__ = 'Records'
     RecordID = db.Column(db.Integer, primary_key=True)
     KidID = db.Column(db.Integer, db.ForeignKey('kids.KidID'), nullable=False)
     Date = db.Column(db.Date, nullable=False)
