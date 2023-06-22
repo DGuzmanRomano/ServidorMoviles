@@ -50,6 +50,9 @@ class RecordsSchema(ma.Schema):
 records_schema = RecordsSchema()
 all_records_schema = RecordsSchema(many=True)
 
+####################################
+########ROUTES######################
+
 @app.route('/parent', methods=['POST'])
 def add_parent():
     FirstName = request.json['FirstName']
