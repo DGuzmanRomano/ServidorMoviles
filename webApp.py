@@ -107,6 +107,20 @@ def get_records():
     result = all_records_schema.dump(all_records)
     return jsonify(result)
 
+
+
+
+@app.route('/test')
+def test_db_connection():
+    try:
+        db.session.execute('SELECT 1')  # Perform a simple query to test the connection
+        return 'Database connection successful!'
+    except Exception as e:
+        return f'Database connection error: {str(e)}'
+
+
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
