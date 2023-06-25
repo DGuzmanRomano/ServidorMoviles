@@ -29,7 +29,7 @@ class Kids(db.Model):
     ParentID = db.Column(db.Integer, db.ForeignKey('parents.ParentID'), nullable=False)
     FirstName = db.Column(db.String(80), nullable=False)
     LastName = db.Column(db.String(80), nullable=False)
-    GroupID = db.Column(db.Integer, nullable=False)  # you can also make this a ForeignKey if the groups table exists
+    GroupID = db.Column(db.Integer, nullable=False) 
 
 class KidsSchema(ma.Schema):
     class Meta:
@@ -74,7 +74,7 @@ def get_parents():
     result = all_parents_schema.dump(all_parents)
     return jsonify(result)
 
-# Add similar routes for Kids and Records tables
+
 
 @app.route('/kid', methods=['POST'])
 def add_kid():
@@ -112,18 +112,6 @@ def get_records():
     all_records = Records.query.all()
     result = all_records_schema.dump(all_records)
     return jsonify(result)
-
-
-
-
-@app.route('/test')
-def test_db_connection():
-    try:
-        db.session.execute(text('SELECT 1'))  # Declare the SQL expression as text
-        return 'Database connection successful!'
-    except Exception as e:
-        return f'Database connection error: {str(e)}'
-
 
 
 
