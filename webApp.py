@@ -15,10 +15,12 @@ class Parents(db.Model):
     ParentID = db.Column(db.Integer, primary_key=True)
     FirstName = db.Column(db.String(80), nullable=False)
     LastName = db.Column(db.String(80), nullable=False)
+    Username = db.Column(db.String(80), nullable=False)
+    Password = db.Column(db.String(80), nullable=False)
 
 class ParentsSchema(ma.Schema):
     class Meta:
-        fields = ('ParentID', 'FirstName', 'LastName')
+        fields = ('ParentID', 'FirstName', 'LastName', 'Username','Password')
 
 parents_schema = ParentsSchema()
 all_parents_schema = ParentsSchema(many=True)
@@ -56,6 +58,26 @@ class RecordsSchema(ma.Schema):
 records_schema = RecordsSchema()
 all_records_schema = RecordsSchema(many=True)
 
+
+class Teachers(db.Model):
+    __tablename__ = 'Teachers'
+    TeacherID = db.Column(db.Integer, primary_key=True)
+    FirstName = db.Column(db.String(80), nullable=False)
+    LastName = db.Column(db.String(80), nullable=False)
+    Username = db.Column(db.String(80), nullable=False)
+    Password = db.Column(db.String(80), nullable=False)
+    
+class TeachersSchema(ma.Schema):
+    class Meta:
+        fields = ('TeacherID', 'FirstName', 'LastName', 'Username', 'Password')
+
+teachers_schema = TeachersSchema()
+all_teachers_schema = TeachersSchema(many=True)
+
+
+
+
+
 ####################################
 ########ROUTES######################
 
@@ -72,6 +94,12 @@ def add_parent():
 def get_parents():
     all_parents = Parents.query.all()
     result = all_parents_schema.dump(all_parents)
+    return jsonify(result)
+
+@app.route('/teacher', methods=['GET'])
+def get_teachers():
+    all_teachers = Teachers.query.all()
+    result = all_teachers_schema.dump(all_teachers)
     return jsonify(result)
 
 
@@ -113,6 +141,22 @@ def get_records():
     result = all_records_schema.dump(all_records)
     return jsonify(result)
 
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username')
+    password = request.json.get('password')
+
+    parent = Parents.query.filter_by(Username=username, Password=password).first()
+    if parent:
+        return jsonify(success=True, role='parent', id=parent.ParentID)
+
+    teacher = Teachers.query.filter_by(Username=username, Password=password).first()
+    if teacher:
+        return jsonify(success=True, role='teacher', id=teacher.TeacherID)
+
+    return jsonify(success=False)
 
 
 if __name__ == '__main__':
