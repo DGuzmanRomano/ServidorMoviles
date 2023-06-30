@@ -26,7 +26,7 @@ all_parents_schema = ParentsSchema(many=True)
 class Kids(db.Model):
     __tablename__ = 'Kids'
     KidID = db.Column(db.Integer, primary_key=True)
-    ParentID = db.Column(db.Integer, db.ForeignKey('parents.ParentID'), nullable=False)
+    ParentID = db.Column(db.Integer, db.ForeignKey('Parents.ParentID'), nullable=False)
     FirstName = db.Column(db.String(80), nullable=False)
     LastName = db.Column(db.String(80), nullable=False)
     GroupID = db.Column(db.Integer, nullable=False) 
@@ -41,7 +41,7 @@ all_kids_schema = KidsSchema(many=True)
 class Records(db.Model):
     __tablename__ = 'Records' 
     RecordID = db.Column(db.Integer, primary_key=True)
-    KidID = db.Column(db.Integer, db.ForeignKey('kids.KidID'), nullable=False)
+    KidID = db.Column(db.Integer, db.ForeignKey('Kids.KidID'), nullable=False)
     Date = db.Column(db.Date, nullable=False)
     EnterTime = db.Column(db.Time, nullable=False)
     ExitTime = db.Column(db.Time, nullable=False)
