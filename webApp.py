@@ -43,20 +43,30 @@ all_kids_schema = KidsSchema(many=True)
 class Records(db.Model):
     __tablename__ = 'Records' 
     RecordID = db.Column(db.Integer, primary_key=True)
-    KidID = db.Column(db.Integer, db.ForeignKey('Kids.KidID'), nullable=False)
-    Date = db.Column(db.Date, nullable=False)
-    EnterTime = db.Column(db.Time, nullable=False)
-    ExitTime = db.Column(db.Time, nullable=False)
-    MealCount = db.Column(db.Integer, nullable=False)
-    BathroomCount = db.Column(db.Integer, nullable=False)
-    Menu = db.Column(db.String(100), nullable=False)
+    KidID = db.Column(db.Integer, db.ForeignKey('Kids.KidID'), nullable=True)
+    Date = db.Column(db.Date, nullable=True)
+    EnterTime = db.Column(db.Time, nullable=True)
+    ExitTime = db.Column(db.Time, nullable=True)
+    MealCount = db.Column(db.Integer, nullable=True)
+    BathroomCount = db.Column(db.Integer, nullable=True)
+    Menu = db.Column(db.String(100), nullable=True)
+    Comment = db.Column(db.String(255), nullable=True)
+    MealInfo = db.Column(db.String(255), nullable=True)
+    ChangeClothes = db.Column(db.Integer, nullable=True)
+    Evacuations = db.Column(db.Integer, nullable=True)
+    Urinations = db.Column(db.Integer, nullable=True)
+    ClassIncident = db.Column(db.String(255), nullable=True)
+    MedicIncident = db.Column(db.String(255), nullable=True)
 
 class RecordsSchema(ma.Schema):
     class Meta:
-        fields = ('RecordID', 'KidID', 'Date', 'EnterTime', 'ExitTime', 'MealCount', 'BathroomCount', 'Menu')
+        fields = ('RecordID', 'KidID', 'Date', 'EnterTime', 'ExitTime', 'MealCount', 
+                  'BathroomCount', 'Menu', 'Comment', 'MealInfo', 'ChangeClothes', 
+                  'Evacuations', 'Urinations', 'ClassIncident', 'MedicIncident')
 
 records_schema = RecordsSchema()
 all_records_schema = RecordsSchema(many=True)
+
 
 
 class Teachers(db.Model):
@@ -123,14 +133,8 @@ def get_kids():
 
 @app.route('/record', methods=['POST'])
 def add_record():
-    KidID = request.json['KidID']
-    Date = request.json['Date']
-    EnterTime = request.json['EnterTime']
-    ExitTime = request.json['ExitTime']
-    MealCount = request.json['MealCount']
-    BathroomCount = request.json['BathroomCount']
-    Menu = request.json['Menu']
-    new_record = Records(KidID=KidID, Date=Date, EnterTime=EnterTime, ExitTime=ExitTime, MealCount=MealCount, BathroomCount=BathroomCount, Menu=Menu)
+    record_data = request.get_json()
+    new_record = Records(**record_data)
     db.session.add(new_record)
     db.session.commit()
     return records_schema.jsonify(new_record)
