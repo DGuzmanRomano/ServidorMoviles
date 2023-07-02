@@ -174,6 +174,11 @@ def get_announcements():
     return jsonify(result)
 
 
+@app.route('/announcement/last', methods=['GET'])
+def get_last_announcement():
+    last_announcement = Announcements.query.order_by(Announcements.ID.desc()).first()
+    result = announcements_schema.dump(last_announcement)
+    return jsonify(result)
 
 
 
