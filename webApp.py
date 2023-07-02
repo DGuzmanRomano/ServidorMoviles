@@ -159,6 +159,26 @@ def get_records():
 
 
 
+@app.route('/announcement', methods=['POST'])
+def add_announcement():
+    announcement = request.json['announcement']
+    new_announcement = Announcements(Announcement=announcement)
+    db.session.add(new_announcement)
+    db.session.commit()
+    return announcements_schema.jsonify(new_announcement)
+
+@app.route('/announcement', methods=['GET'])
+def get_announcements():
+    all_announcements = Announcements.query.all()
+    result = all_announcements_schema.dump(all_announcements)
+    return jsonify(result)
+
+
+
+
+
+
+
 @app.route('/login', methods=['POST'])
 def login():
     username = request.json.get('username')
@@ -177,21 +197,6 @@ def login():
 
 
 
-
-
-@app.route('/announcement', methods=['POST'])
-def add_announcement():
-    announcement = request.json['announcement']
-    new_announcement = Announcements(Announcement=announcement)
-    db.session.add(new_announcement)
-    db.session.commit()
-    return announcements_schema.jsonify(new_announcement)
-
-@app.route('/announcement', methods=['GET'])
-def get_announcements():
-    all_announcements = Announcements.query.all()
-    result = all_announcements_schema.dump(all_announcements)
-    return jsonify(result)
 
 
 
