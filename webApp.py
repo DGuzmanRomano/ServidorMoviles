@@ -192,7 +192,7 @@ def login():
     if teacher:
         return jsonify(success=True, role='teacher', id=teacher.TeacherID)
 
-    return jsonify(success=False
+    return jsonify(success=False)
 
 
 
