@@ -158,14 +158,14 @@ def get_records():
     return jsonify(result)
 
 
-
 @app.route('/announcement', methods=['POST'])
 def add_announcement():
-    announcement = request.json['announcement']
+    announcement = request.json['Announcement']
     new_announcement = Announcements(Announcement=announcement)
     db.session.add(new_announcement)
     db.session.commit()
     return announcements_schema.jsonify(new_announcement)
+
 
 @app.route('/announcement', methods=['GET'])
 def get_announcements():
