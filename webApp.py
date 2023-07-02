@@ -85,6 +85,18 @@ teachers_schema = TeachersSchema()
 all_teachers_schema = TeachersSchema(many=True)
 
 
+class Announcements(db.Model):
+    __tablename__ = 'Announcements'
+    ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    Announcement = db.Column(db.String(500), nullable=False)
+
+class AnnouncementsSchema(ma.Schema):
+    class Meta:
+        fields = ('ID', 'Announcement')
+
+announcements_schema = AnnouncementsSchema()
+all_announcements_schema = AnnouncementsSchema(many=True)
+
 
 
 
@@ -160,7 +172,29 @@ def login():
     if teacher:
         return jsonify(success=True, role='teacher', id=teacher.TeacherID)
 
-    return jsonify(success=False)
+    return jsonify(success=False
+
+
+
+
+
+
+@app.route('/announcement', methods=['POST'])
+def add_announcement():
+    announcement = request.json['announcement']
+    new_announcement = Announcements(Announcement=announcement)
+    db.session.add(new_announcement)
+    db.session.commit()
+    return announcements_schema.jsonify(new_announcement)
+
+@app.route('/announcement', methods=['GET'])
+def get_announcements():
+    all_announcements = Announcements.query.all()
+    result = all_announcements_schema.dump(all_announcements)
+    return jsonify(result)
+
+
+
 
 
 if __name__ == '__main__':
